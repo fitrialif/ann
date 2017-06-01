@@ -263,35 +263,35 @@ class Dropout(Model):
         return None, None
 
 
-class BatchNorm(Model):
-    def __init__(self):
-        Model.__init__(self)
-        self.mu = []
-        self.sig = []
-        return
-    
-    def normalize(self, inputs, mu, sig):
-        return (inputs - mu) / sig
-    
-    def forprop(self, inputs):
-        if self.train:
-            self.mu = np.mean(inputs)
-            self.sig = np.std(inputs) + 1e-8
-            #self.mu.append(np.mean(inputs, axis=1, keepdims=True))
-            #self.sig.append(np.std(inputs, axis=1, keepdims=True) + 1e-8)
-
-            self.output = self.normalize(inputs, self.mu, self.sig)
-        else:
-            mu_overall = np.mean(self.mu, axis=0, keepdims=True)
-            sig_overall = np.mean(self.sig, axis=0, keepdims=True)
-            
-            self.output = self.normalize(inputs, mu_overall, sig_overall)
-        
-    def backprop(self, inputs, gradOutput):
-        self.gradIn = gradOutput * self.sig
-        
-    def parameters(self):
-        return None, None
+#class BatchNorm(Model):
+#    def __init__(self):
+#        Model.__init__(self)
+#        self.mu = []
+#        self.sig = []
+#        return
+#    
+#    def normalize(self, inputs, mu, sig):
+#        return (inputs - mu) / sig
+#    
+#    def forprop(self, inputs):
+#        if self.train:
+#            self.mu = np.mean(inputs)
+#            self.sig = np.std(inputs) + 1e-8
+#            #self.mu.append(np.mean(inputs, axis=1, keepdims=True))
+#            #self.sig.append(np.std(inputs, axis=1, keepdims=True) + 1e-8)
+#
+#            self.output = self.normalize(inputs, self.mu, self.sig)
+#        else:
+#            mu_overall = np.mean(self.mu, axis=0, keepdims=True)
+#            sig_overall = np.mean(self.sig, axis=0, keepdims=True)
+#            
+#            self.output = self.normalize(inputs, mu_overall, sig_overall)
+#        
+#    def backprop(self, inputs, gradOutput):
+#        self.gradIn = gradOutput * self.sig
+#        
+#    def parameters(self):
+#        return None, None
 
 
 def error(X, y, model):
